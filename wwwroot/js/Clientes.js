@@ -47,33 +47,18 @@ function MostrarClientes(data) {
         td6.appendChild(btnEliminar);
     });
 }
- function MostrarClientes(data) {
-     $("#todosLosClientes").empty();
-     $.each(data, function(index, item) {
-         $('#todosLosClientes').append(
-             "<tr>",
-             "<td>" + item.id + "</td>",
-             "<td>" + item.nombreCliente + "</td>",
-             "<td>" + item.apellidoCliente + "</td>",
-             "<td>" + item.dni + "</td>",
-             "<td>" + item.saldo + "</td>",
-             "<td><button class='btn btn-info' onclick='BuscarClienteId(" + item.id + ")'>Modificar</button></td>",
-             "<td><button class='btn btn-danger' onclick='EliminarCliente(" + item.id + ")'>Eliminar</button></td>",
-             "</tr>"
-         )
-     })
- }
+ 
 
 function CrearCliente() {
-   //  var dniCliente = document.getElementById("DNI").value;
-     //if (dniCliente == "" || dniCliente == null) {
-       //  return mensajesError('#error', null, "Por favor ingrese un DNI para el Cliente.");
-     //}
+     var dniC= document.getElementById("DNI").value;
+     if (dniC == "" || dniC == null) {
+         return mensajesError('#error', null, "Por favor ingrese un DNI para el Cliente.");
+     }
 
     let cliente = {
         nombreCliente: document.getElementById("Nombre").value,
         apellidoCliente: document.getElementById("Apellido").value,
-        dni: document.getElementById("DNI").value,
+        dni: parseInt(dniC),
         saldo: document.getElementById("Saldo").value,
     };
 
@@ -93,6 +78,8 @@ function CrearCliente() {
             document.getElementById("Apellido").value = "";
             document.getElementById("DNI").value = 0;
             document.getElementById("Saldo").value = 0;
+            $("#error").empty();
+            $("#error").attr("hidden", true);
 
             $('#modalAgregarClientes').modal('hide');
             ObtenerClientes();
@@ -145,12 +132,17 @@ function BuscarClienteId(id) {
 function EditarCliente() {
     let idCliente = document.getElementById("IdCliente").value;
 
+    var dniC= document.getElementById("DNIEditar").value;
+    if (dniC == "" || dniC == null) {
+        return mensajesError('#errorEditar', null, "Por favor ingrese un DNI para el Cliente.");
+    }
+
     let editarCliente = {
-        id: idProducto,
+        id: idCliente,
         nombreCliente: document.getElementById("NombreEditar").value,
         apellidoCliente: document.getElementById("ApellidoEditar").value,
         dni: document.getElementById("DNIEditar").value,
-        saldo: document.getElementById("SaldoEditar").value
+        saldo: document.getElementById("SaldoEditar").value,
     }
 
     fetch(`https://localhost:7245/Clientes/${idCliente}`, {
@@ -161,12 +153,13 @@ function EditarCliente() {
         body: JSON.stringify(editarCliente)
     })
     .then(data => {
-
+        if(data.status == undefined)
             document.getElementById("IdCliente").value = 0;
             document.getElementById("NombreEditar").value = "";
             document.getElementById("ApellidoEditar").value = "";
             document.getElementById("DNIEditar").value = 0;
             document.getElementById("SaldoEditar").value = 0;
+            
             $('#modalEditarClientes').modal('hide');
             ObtenerClientes();
     })

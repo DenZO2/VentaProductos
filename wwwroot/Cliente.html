@@ -25,7 +25,9 @@
           </li>
           <li class="nav-item">
             <a class="nav-link active" href="Index.html">Productos</a>
-            <a class="nav-link" href="Cliente.html">Clientes</a>
+          </li>
+          <li>
+            <a class="nav-link" href="Cliente.html">Cliente</a>
           </li>
         </ul>
       </div>
@@ -69,13 +71,15 @@
               <input type="text" id="Nombre" placeholder="Nombre del Cliente" class="form-control">
 
               <label for="Apellido" class="form-label">Apellido</label>
-              <input type="text" id="Cantidad" class="form-control">
+              <input type="text" id="Apellido" class="form-control">
 
               <label for="DNI" class="form-label">DNI</label>
               <input type="number" id="DNI" class="form-control">
 
               <label for="Saldo" class="form-label">Saldo</label>
               <input type="number" id="Saldo" class="form-control">
+
+              <p id="error" hidden></p>
             </div>
           </div>
           <div class="modal-footer">
@@ -88,7 +92,7 @@
 
 
     <!-- MODAL -->
-    <div id="modalEditarCliente" class="modal fade" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
+    <div id="modalEditarClientes" class="modal fade" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -96,10 +100,10 @@
           </div>
           <div class="modal-body">
             <div class="row">
-              <input type="number" id="IdProducto" class="form-control" readonly hidden>
+              <input type="number" id="IdCliente" class="form-control" readonly hidden>
 
               <label for="NombreEditar" class="form-label">Nombre</label>
-              <input type="text" id="NombreEditar" placeholder="Nombre del Alumno" class="form-control">
+              <input type="text" id="NombreEditar" placeholder="Nombre del Cliente" class="form-control">
 
               <label for="ApellidoEditar" class="form-label">Apellido</label>
               <input type="text" id="ApellidoEditar" class="form-control">
@@ -109,6 +113,8 @@
 
               <label for="SaldoEditar" class="form-label">Saldo</label>
               <input type="number" id="SaldoEditar" class="form-control">
+
+              <p id="errorEditar" hidden></p>
             </div>
           </div>
             <div class="modal-footer">

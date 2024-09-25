@@ -47,35 +47,29 @@ function MostrarProductos(data) {
         td6.appendChild(btnEliminar);
     });
 }
- function MostrarProductos(data) {
-     $("#todosLosProductos").empty();
-     $.each(data, function(index, item) {
-         $('#todosLosProductos').append(
-             "<tr>",
-             "<td>" + item.id + "</td>",
-             "<td>" + item.nombreProducto + "</td>",
-             "<td>" + item.cantidad + "</td>",
-             "<td>" + item.precioVenta + "</td>",
-             "<td>" + item.precioCompra + "</td>",
-            "<td><button class='btn btn-info' onclick='BuscarProductoId(" + item.id + ")'>Modificar</button></td>",
-             "<td><button class='btn btn-danger' onclick='EliminarProducto(" + item.id + ")'>Eliminar</button></td>",
-             "</tr>"
-         )
-     })
- }
+
 
 function CrearProducto() {
-    var nombreProd = document.getElementById("Nombre").value;
-    console.log(nombreProd);
-    if (nombreProd == "" || nombreProd == null) {
+    var nompro = document.getElementById("Nombre").value;
+    if (nompro == "" || nompro == null) {
         return mensajesError('#error', null, "Por favor ingrese un Nombre para el Producto.");
     }
 
+    var preven = document.getElementById("PrecioVenta").value;
+    if (preven == "" || preven == null) {
+        return mensajesError('#error', null, "Por favor ingrese un Precio de venta para el Producto.");
+    }
+
+    var precom = document.getElementById("PrecioCompra").value;
+    if (precom == "" || precom == null) {
+        return mensajesError('#error', null, "Por favor ingrese un Precio de compra para el Producto.");
+    }
+
     let producto = {
-        nombreProducto: parseInt(nombreProd),
+        nombreProducto: document.getElementById("Nombre").value,
         cantidad: document.getElementById("Cantidad").value,
-        precioVenta: document.getElementById("PrecioVenta").value,
-        precioCompra: document.getElementById("PrecioCompra").value,
+        precioVenta: parseInt(preven),
+        precioCompra: parseInt(precom)
     };
 
     fetch('https://localhost:7245/Productos',
@@ -94,6 +88,8 @@ function CrearProducto() {
             document.getElementById("Cantidad").value = 0;
             document.getElementById("PrecioVenta").value = 0;
             document.getElementById("PrecioCompra").value = 0;
+            $("#error").empty();
+            $("#error").attr("hidden", true);
 
             $('#modalAgregarProductos').modal('hide');
             ObtenerProductos();
@@ -145,6 +141,22 @@ function BuscarProductoId(id) {
 
 function EditarProducto() {
     let idProducto = document.getElementById("IdProducto").value;
+
+    var nompro = document.getElementById("NombreEditar").value;
+    if (nompro == "" || nompro == null) {
+        return mensajesError('#errorEditar', null, "Por favor ingrese un Nombre para el Producto.");
+    }
+
+    var prevenedi = document.getElementById("PrecioVentaEditar").value;
+    if (prevenedi == "" || prevenedi == null) {
+        return mensajesError('#errorEditar', null, "Por favor ingrese un Precio de venta para el Producto.");
+    }
+
+    var precomedi = document.getElementById("PrecioCompraEditar").value;
+    if (precomedi == "" || precome == null) {
+        return mensajesError('#errorEditar', null, "Por favor ingrese un Precio de compra para el Producto.");
+    }
+
 
     let editarProducto = {
         id: idProducto,

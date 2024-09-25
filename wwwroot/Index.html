@@ -25,8 +25,9 @@
           </li>
           <li class="nav-item">
             <a class="nav-link active" href="Index.html">Productos</a>
+          </li>
+          <li>
             <a class="nav-link" href="Cliente.html">Cliente</a>
-
           </li>
         </ul>
       </div>
@@ -78,6 +79,8 @@
 
               <label for="PrecioCompra" class="form-label">Precio Compra</label>
               <input type="number" id="PrecioCompra" class="form-control">
+
+              <p id="error" hidden></p>
             </div>
           </div>
           <div class="modal-footer">
@@ -101,7 +104,7 @@
               <input type="number" id="IdProducto" class="form-control" readonly hidden>
 
               <label for="NombreEditar" class="form-label">Nombre</label>
-              <input type="text" id="NombreEditar" placeholder="Nombre del Alumno" class="form-control">
+              <input type="text" id="NombreEditar" placeholder="Nombre del Producto" class="form-control">
 
               <label for="CantidadEditar" class="form-label">Cantidad</label>
               <input type="number" id="CantidadEditar" class="form-control">
@@ -111,6 +114,8 @@
 
               <label for="PrecioCompraEditar" class="form-label">Precio Compra</label>
               <input type="number" id="PrecioCompraEditar" class="form-control">
+
+              <p id="errorEditar" hidden></p>
             </div>
           </div>
             <div class="modal-footer">
