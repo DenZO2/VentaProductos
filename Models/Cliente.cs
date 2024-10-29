@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using InscripcionExamenes.Models;
 
 namespace VentaProductos.Models;
 
@@ -11,4 +12,7 @@ public class Cliente
     public string? ApellidoCliente { get; set; }
     public int Dni { get; set; }
     public float Saldo { get; set; }
+    public virtual ICollection<Producto>? Producto {get;set;}
+    public virtual ICollection<Venta>? Venta { get; set;}
+
 }
