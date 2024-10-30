@@ -47,29 +47,50 @@ function MostrarProductos(data) {
         td6.appendChild(btnEliminar);
     });
 }
-
+// function MostrarProductos(data) {
+//     $("#todosLosProductos").empty();
+//     $.each(data, function(index, item) {
+//         $('#todosLosProductos').append(
+//             "<tr>",
+//             "<td>" + item.id + "</td>",
+//             "<td>" + item.nombreProducto + "</td>",
+//             "<td>" + item.cantidad + "</td>",
+//             "<td>" + item.precioVenta + "</td>",
+//             "<td>" + item.precioCompra + "</td>",
+//             "<td><button class='btn btn-info' onclick='BuscarProductoId(" + item.id + ")'>Modificar</button></td>",
+//             "<td><button class='btn btn-danger' onclick='EliminarProducto(" + item.id + ")'>Eliminar</button></td>",
+//             "</tr>"
+//         )
+//     })
+// }
 
 function CrearProducto() {
-    var nompro = document.getElementById("Nombre").value;
-    if (nompro == "" || nompro == null) {
+
+    var nombreP = document.getElementById("Nombre").value;
+    if (nombreP == "" || nombreP == null) {
         return mensajesError('#error', null, "Por favor ingrese un Nombre para el Producto.");
     }
 
-    var preven = document.getElementById("PrecioVenta").value;
-    if (preven == "" || preven == null) {
-        return mensajesError('#error', null, "Por favor ingrese un Precio de venta para el Producto.");
+    var cantidadP = document.getElementById("Cantidad").value;
+    if (cantidadP == "" || cantidadP == null) {
+        return mensajesError('#error', null, "Por favor ingrese una Cantidad de Producto.");
     }
 
-    var precom = document.getElementById("PrecioCompra").value;
-    if (precom == "" || precom == null) {
-        return mensajesError('#error', null, "Por favor ingrese un Precio de compra para el Producto.");
-    }
+     var precioV = document.getElementById("PrecioVenta").value;
+     if (precioV == "" || precioV == null) {
+         return mensajesError('#error', null, "Por favor ingrese un Precio de Venta para el Producto.");
+     }
+
+     var precioC = document.getElementById("PrecioCompra").value;
+     if (precioC == "" || precioC == null) {
+         return mensajesError('#error', null, "Por favor ingrese un Precio de Compra para el Producto.");
+     }
 
     let producto = {
         nombreProducto: document.getElementById("Nombre").value,
         cantidad: document.getElementById("Cantidad").value,
-        precioVenta: parseInt(preven),
-        precioCompra: parseInt(precom)
+        precioVenta: parseInt(precioV),
+        precioCompra: parseInt(precioC),
     };
 
     fetch('https://localhost:7245/Productos',
@@ -90,12 +111,11 @@ function CrearProducto() {
             document.getElementById("PrecioCompra").value = 0;
             $("#error").empty();
             $("#error").attr("hidden", true);
-
             $('#modalAgregarProductos').modal('hide');
             ObtenerProductos();
-         } else {
+        } else {
              mensajesError('#error', data);
-         }
+        }
             
     })
     .catch(error => console.log("Hubo un error al guardar el Producto nuevo, verifique el mensaje de error: ", error))
@@ -142,21 +162,25 @@ function BuscarProductoId(id) {
 function EditarProducto() {
     let idProducto = document.getElementById("IdProducto").value;
 
-    var nompro = document.getElementById("NombreEditar").value;
-    if (nompro == "" || nompro == null) {
+    var nombreP = document.getElementById("NombreEditar").value;
+    if (nombreP == "" || nombreP == null) {
         return mensajesError('#errorEditar', null, "Por favor ingrese un Nombre para el Producto.");
     }
 
-    var prevenedi = document.getElementById("PrecioVentaEditar").value;
-    if (prevenedi == "" || prevenedi == null) {
-        return mensajesError('#errorEditar', null, "Por favor ingrese un Precio de venta para el Producto.");
+    var cantidadP = document.getElementById("CantidadEditar").value;
+    if (cantidadP == "" || cantidadP == null) {
+        return mensajesError('#errorEditar', null, "Por favor ingrese una Cantidad de Producto.");
     }
 
-    var precomedi = document.getElementById("PrecioCompraEditar").value;
-    if (precomedi == "" || precome == null) {
-        return mensajesError('#errorEditar', null, "Por favor ingrese un Precio de compra para el Producto.");
-    }
+     var precioV = document.getElementById("PrecioVentaEditar").value;
+     if (precioV == "" || precioV == null) {
+         return mensajesError('#errorEditar', null, "Por favor ingrese un Precio de Venta para el Producto.");
+     }
 
+     var precioC = document.getElementById("PrecioCompraEditar").value;
+     if (precioC == "" || precioC == null) {
+         return mensajesError('#errorEditar', null, "Por favor ingrese un Precio de Compra para el Producto.");
+     }
 
     let editarProducto = {
         id: idProducto,
@@ -180,6 +204,8 @@ function EditarProducto() {
             document.getElementById("CantidadEditar").value = 0;
             document.getElementById("PrecioVentaEditar").value = 0;
             document.getElementById("PrecioCompraEditar").value = 0;
+            $("#errorEditar").empty();
+            $("#errorEditar").attr("hidden", true);
             $('#modalEditarProductos').modal('hide');
             ObtenerProductos();
     })
@@ -187,24 +213,24 @@ function EditarProducto() {
 }
 
 
- function mensajesError(id, data, mensaje) {
-     $(id).empty();
-     if (data != null) {
-         $.each(data.errors, function(index, item) {
-             $(id).append(
-                 "<ol>",
-                 "<li>" + item + "</li>",
-                 "</ol>"
-             )
-         })
-     }
-     else{
-         $(id).append(
-             "<ol>",
-             "<li>" + mensaje + "</li>",
-             "</ol>"
-         )
-     }
+function mensajesError(id, data, mensaje) {
+    $(id).empty();
+    if (data != null) {
+        $.each(data.errors, function(index, item) {
+            $(id).append(
+                "<ol>",
+                "<li>" + item + "</li>",
+                "</ol>"
+            )
+        })
+    }
+    else{
+        $(id).append(
+            "<ol>",
+            "<li>" + mensaje + "</li>",
+            "</ol>"
+        )
+    }
     
-     $(id).attr("hidden", false);
- }
+    $(id).attr("hidden", false);
+}

@@ -13,24 +13,24 @@ function MostrarClientes(data) {
         let tr = tbody.insertRow();
 
         let td0 = tr.insertCell(0);
-        let tdId = document.createTextNode(element.id)
-        td0.appendChild(tdId)
+        let tdId = document.createTextNode(element.id);
+        td0.appendChild(tdId);
 
         let td1 = tr.insertCell(1);
-        let tdNombreCliente = document.createTextNode(element.nombreCliente)
-        td1.appendChild(tdNombreCliente)
+        let tdNombre = document.createTextNode(element.nombreCliente);
+        td1.appendChild(tdNombre);
 
         let td2 = tr.insertCell(2);
-        let tdApellidoCliente = document.createTextNode(element.apellidoCliente)
-        td2.appendChild(tdApellidoCliente)
+        let tdApellido = document.createTextNode(element.apellidoCliente);
+        td2.appendChild(tdApellido);
 
         let td3 = tr.insertCell(3);
-        let tdDNI = document.createTextNode(element.dni)
-        td3.appendChild(tdDNI)
+        let tdDni = document.createTextNode(element.dni);
+        td3.appendChild(tdDni);
 
         let td4 = tr.insertCell(4);
-        let tdSaldo = document.createTextNode(element.saldo)
-        td4.appendChild(tdSaldo)
+        let tdSaldo = document.createTextNode(element.saldo);
+        td4.appendChild(tdSaldo);
 
         let btnEditar = document.createElement('button');
         btnEditar.innerText = 'Modificar';
@@ -47,18 +47,35 @@ function MostrarClientes(data) {
         td6.appendChild(btnEliminar);
     });
 }
- 
 
-function CrearCliente() {
-     var dniC= document.getElementById("DNI").value;
-     if (dniC == "" || dniC == null) {
-         return mensajesError('#error', null, "Por favor ingrese un DNI para el Cliente.");
+
+function CrearClientes() {
+     var nomCliente = document.getElementById("Nombre").value;
+     if (nomCliente == "" || nomCliente == null) {
+         return mensajesError('#error', null, "Por favor ingrese un Nombre para el Cliente.");
      }
+
+     var apellidoCliente = document.getElementById("Apellido").value;
+     if (apellidoCliente == "" || apellidoCliente == null) {
+         return mensajesError('#error', null, "Por favor ingrese un Apellido para el Cliente.");
+     }
+
+     var dniCliente = document.getElementById("Dni").value;
+    if (dniCliente == "" || dniCliente == null || !/^\d{8}$/.test(dniCliente)) {
+        return mensajesError('#error', null, "Por favor ingrese un DNI de 8 digitos.");
+    }
+
+    var saldo = document.getElementById("Saldo").value;
+    if (saldo == "" || saldo == null) {
+        return mensajesError('#error', null, "Por favor ingrese un Saldo para el Cliente.");
+    }
+
+  
 
     let cliente = {
         nombreCliente: document.getElementById("Nombre").value,
         apellidoCliente: document.getElementById("Apellido").value,
-        dni: parseInt(dniC),
+        dni: document.getElementById("Dni").value,
         saldo: document.getElementById("Saldo").value,
     };
 
@@ -76,16 +93,15 @@ function CrearCliente() {
          if(data.status == undefined){
             document.getElementById("Nombre").value = "";
             document.getElementById("Apellido").value = "";
-            document.getElementById("DNI").value = 0;
+            document.getElementById("Dni").value = "";
             document.getElementById("Saldo").value = 0;
             $("#error").empty();
             $("#error").attr("hidden", true);
-
             $('#modalAgregarClientes').modal('hide');
             ObtenerClientes();
-       } else {
-           mensajesError('#error', data);
-       }
+         } else {
+             mensajesError('#error', data);
+         }
             
     })
     .catch(error => console.log("Hubo un error al guardar el Producto nuevo, verifique el mensaje de error: ", error))
@@ -93,7 +109,7 @@ function CrearCliente() {
 
 
 function EliminarCliente(id) {
-    var siElimina = confirm("¿Esta seguro de borrar este cliente?.")
+    var siElimina = confirm("¿Esta seguro de borrar este producto?.")
     if (siElimina == true) {
         EliminarSi(id);
     }
@@ -120,7 +136,7 @@ function BuscarClienteId(id) {
         document.getElementById("IdCliente").value = data.id;
         document.getElementById("NombreEditar").value = data.nombreCliente;
         document.getElementById("ApellidoEditar").value = data.apellidoCliente;
-        document.getElementById("DNIEditar").value = data.dni;
+        document.getElementById("DniEditar").value = data.dni;
         document.getElementById("SaldoEditar").value = data.saldo;
 
         $('#modalEditarClientes').modal('show');
@@ -132,17 +148,34 @@ function BuscarClienteId(id) {
 function EditarCliente() {
     let idCliente = document.getElementById("IdCliente").value;
 
-    var dniC= document.getElementById("DNIEditar").value;
-    if (dniC == "" || dniC == null) {
-        return mensajesError('#errorEditar', null, "Por favor ingrese un DNI para el Cliente.");
+    var nomCliente = document.getElementById("NombreEditar").value;
+    if (nomCliente == "" || nomCliente == null) {
+        return mensajesError('#errorEditar', null, "Por favor ingrese un Nombre para el Cliente.");
     }
+
+    var apellidoCliente = document.getElementById("ApellidoEditar").value;
+    if (apellidoCliente == "" || apellidoCliente == null) {
+        return mensajesError('#errorEditar', null, "Por favor ingrese un Apellido para el Cliente.");
+    }
+
+    var dniCliente = document.getElementById("DniEditar").value;
+   if (dniCliente == "" || dniCliente == null || !/^\d{8}$/.test(dniCliente)) {
+       return mensajesError('#errorEditar', null, "Por favor ingrese un DNI de 8 digitos.");
+   }
+
+   var saldo = document.getElementById("SaldoEditar").value;
+   if (saldo == "" || saldo == null) {
+       return mensajesError('#errorEditar', null, "Por favor ingrese un Saldo para el Cliente.");
+   }
+
+
 
     let editarCliente = {
         id: idCliente,
         nombreCliente: document.getElementById("NombreEditar").value,
         apellidoCliente: document.getElementById("ApellidoEditar").value,
-        dni: document.getElementById("DNIEditar").value,
-        saldo: document.getElementById("SaldoEditar").value,
+        dni: document.getElementById("DniEditar").value,
+        saldo: document.getElementById("SaldoEditar").value
     }
 
     fetch(`https://localhost:7245/Clientes/${idCliente}`, {
@@ -153,38 +186,45 @@ function EditarCliente() {
         body: JSON.stringify(editarCliente)
     })
     .then(data => {
-        if(data.status == undefined)
+
+        if(data.status == undefined || data.status == 204) {
+           
             document.getElementById("IdCliente").value = 0;
             document.getElementById("NombreEditar").value = "";
             document.getElementById("ApellidoEditar").value = "";
-            document.getElementById("DNIEditar").value = 0;
+            document.getElementById("DniEditar").value = 0;
             document.getElementById("SaldoEditar").value = 0;
-            
+            $("#errorEditar").empty();
+            $("#errorEditar").attr("hidden", true);
             $('#modalEditarClientes').modal('hide');
             ObtenerClientes();
+        }
+    else{
+        mensajesError('#errorEditar', data);
+    }
     })
     .catch(error => console.error("No se pudo acceder a la api, verifique el mensaje de error: ", error))
 }
 
 
 function mensajesError(id, data, mensaje) {
-     $(id).empty();
-     if (data != null) {
-         $.each(data.errors, function(index, item) {
-             $(id).append(
-                 "<ol>",
-                 "<li>" + item + "</li>",
-                 "</ol>"
-             )
-         })
-     }
-     else{
-         $(id).append(
-             "<ol>",
-             "<li>" + mensaje + "</li>",
-             "</ol>"
-         )
-     }
+    $(id).empty();
+    if (data != null) {
+        $.each(data.errors, function(index, item) {
+            $(id).append(
+                "<ol>",
+                "<li>" + item + "</li>",
+                "</ol>"
+            )
+        })
+    }
+    else{
+        $(id).append(
+            "<ol>",
+            "<li>" + mensaje + "</li>",
+            "</ol>"
+        )
+    }
     
-     $(id).attr("hidden", false);
- }
+    $(id).attr("hidden", false);
+}

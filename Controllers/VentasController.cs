@@ -5,30 +5,30 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using InscripcionExamenes.Models;
 using VentaProductos.Models;
 
 namespace VentaProductos.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class VentaController : ControllerBase
+    public class VentasController : ControllerBase
     {
         private readonly Context _context;
 
-        public VentaController(Context context)
+        public VentasController(Context context)
         {
             _context = context;
         }
 
-        // GET: api/Venta
+        // GET: api/Ventas
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Venta>>> GetVenta()
-        {
-            return await _context.Venta.ToListAsync();
+        {   
+             var ventas = await _context.Venta.Include(x => x.Cliente).ToListAsync();
+            return ventas;
         }
 
-        // GET: api/Venta/5
+        // GET: api/Ventas/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Venta>> GetVenta(int id)
         {
@@ -42,7 +42,7 @@ namespace VentaProductos.Controllers
             return venta;
         }
 
-        // PUT: api/Venta/5
+        // PUT: api/Ventas/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutVenta(int id, Venta venta)
@@ -73,18 +73,29 @@ namespace VentaProductos.Controllers
             return NoContent();
         }
 
-        // POST: api/Venta
+        // POST: api/Ventas
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Venta>> PostVenta(Venta venta)
         {
+            // Cargar el cliente y sus ventas
+            var cliente = await _context.Clientes.Include(c => c.Ventas)
+                  .FirstOrDefaultAsync(c => c.Id == venta.ClienteId);
+
+            // Verificar si el cliente tiene alguna venta pendiente
+            if (cliente != null && cliente.Ventas != null && cliente.Ventas.Any(v => v.Finalizada != true))
+            {
+                return BadRequest("El cliente tiene una venta pendiente.");
+            }
+
+
             _context.Venta.Add(venta);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetVenta", new { id = venta.Id }, venta);
         }
 
-        // DELETE: api/Venta/5
+        // DELETE: api/Ventas/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVenta(int id)
         {
